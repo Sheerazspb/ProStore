@@ -2,7 +2,7 @@ import { z } from "zod";
 import { formatNumber } from "./utils";
 
 const currency = z.string().refine((value) => /^\d+(\.\d{2})?$/.test(formatNumber(Number(value))),"Price must have two decimal places")
-
+// Schema for Product
 export const insertProductSchema = z.object({
   name: z.string().min(3,"Name must be at least 3 characters").trim(),
   slug: z.string().min(3,"Slug must be at least 3 characters").trim(),
@@ -14,4 +14,9 @@ export const insertProductSchema = z.object({
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
   price: currency,
+});
+// Schema for Signin
+export const signInFormSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6,"Password must be at least 6 characters"),
 });
