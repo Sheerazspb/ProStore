@@ -8,6 +8,7 @@
     "pkey",
     "pooler",
     "prostore",
+    "sonner",
     "sslmode"
   ]
 }

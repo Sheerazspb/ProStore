@@ -3,7 +3,7 @@ import {PrismaAdapter} from "@auth/prisma-adapter";
 import {prisma} from "@/db/prisma";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compareSync } from "bcrypt-ts-edge";
-import type { NextAuthConfig } from "next-auth";
+import { authConfig } from './auth.config';
 
 export const config = {
   pages: {
@@ -11,7 +11,7 @@ export const config = {
     error: "/sign-in",
   },
   session: {
-    strategy: "jwt",
+    strategy: 'jwt' as const,
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   adapter: PrismaAdapter(prisma),
@@ -45,6 +45,7 @@ export const config = {
     })
   ],
   callbacks: {
+    ...authConfig.callbacks,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session ({session, user,trigger,token}:any) {
       // set user id from token
@@ -79,8 +80,9 @@ export const config = {
       });
     }
     return token;
-    }
+    },
   },
-} satisfies NextAuthConfig;
+  
+} 
 
 export const { handlers, auth,signIn,signOut } = NextAuth(config);
